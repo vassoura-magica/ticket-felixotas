@@ -16,6 +16,8 @@ module.exports = {
             await this.claimTicket(interaction, client);
         } else if (customId === 'cancel_close') {
             await this.cancelClose(interaction);
+        } else if (customId === 'cancel_delete') {
+            await this.cancelDelete(interaction);
         } else if (customId === 'confirm_close') {
             await this.confirmClose(interaction, client);
         } else if (customId === 'confirm_delete') {
@@ -112,7 +114,6 @@ module.exports = {
 
         logger.addLog(client, {
             type: 'claim',
-            user: member.user,
             staff: member.user,
             channel: interaction.channel,
             timestamp: new Date()
@@ -182,6 +183,10 @@ module.exports = {
         await logger.sendLogs(client);
     },
 
+    async cancelDelete(interaction) {
+        await interaction.update({ content: 'Exclusão cancelada.', embeds: [], components: [] });
+    },
+
     async cancelClose(interaction) {
         await interaction.update({ content: 'Fechamento cancelado.', embeds: [], components: [] });
     },
@@ -205,7 +210,7 @@ module.exports = {
                     .setLabel('Confirmar')
                     .setStyle(ButtonStyle.Danger),
                 new ButtonBuilder()
-                    .setCustomId('cancel_close')
+                    .setCustomId('cancel_delete')
                     .setLabel('Cancelar')
                     .setStyle(ButtonStyle.Secondary)
             );
